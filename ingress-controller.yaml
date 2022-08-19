@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: my-ingress
+spec:
+  destination:
+    namespace: default
+    server: 'https://kubernetes.default.svc'
+  source:
+    repoURL: 'https://helm.nginx.com/stable'
+    chart: nginx-ingress
+    targetRevision: 0.14.0
+    helm:
+      parameters:
+        - name: prometheus.port
+          values: 9901
+        - name: prometheus.create
+          values: "true"
+          
+  project: default
+  syncPolicy:
+    automated:
+      selfHeal: true
