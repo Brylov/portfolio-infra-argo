@@ -29,7 +29,7 @@ spec:
             enable-ssl-passthrough: true
   destination:
     server: 'https://kubernetes.default.svc'
-    namespace: ingress-nginx
+    namespace: default
   syncPolicy:
     syncOptions:
       - CreateNamespace=true  
