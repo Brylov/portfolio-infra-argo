@@ -16,7 +16,7 @@ spec:
             prometheus.io/scrape: "true"
             prometheus.io/port: "10254"
           metrics:
-            enabled: true
+            enabled: false
             serviceMonitor:
               additionalLabels:
                 release: prometheus-stack
