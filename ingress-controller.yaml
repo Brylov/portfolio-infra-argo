@@ -1,23 +1,38 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: my-ingress
+  name: ingress-nginx
+  namespace: argocd  
 spec:
-  destination:
-    namespace: default
-    server: 'https://kubernetes.default.svc'
-  source:
-    repoURL: 'https://helm.nginx.com/stable'
-    chart: nginx-ingress
-    targetRevision: 0.14.0
-    helm:
-      parameters:
-        - name: prometheus.port
-          values: 9901
-        - name: prometheus.create
-          values: "true"
-          
   project: default
+  source:
+    repoURL: 'https://kubernetes.github.io/ingress-nginx'
+    targetRevision: 4.2.0
+    chart: ingress-nginx
+    helm:
+      values: |
+        controller:
+          podAnnotations:
+            prometheus.io/scrape: "true"
+            prometheus.io/port: "10254"
+          metrics:
+            enabled: true
+            serviceMonitor:
+              additionalLabels:
+                release: prometheus-stack
+              enabled: true        
+            service:
+              annotations:
+                prometheus.io/port: "10254"
+                prometheus.io/scrape: "true"            
+          extra_args:
+            enable-ssl-passthrough: true
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: ingress-nginx
   syncPolicy:
+    syncOptions:
+      - CreateNamespace=true  
     automated:
       selfHeal: true
+      prune: true
