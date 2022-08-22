@@ -1,0 +1,11 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: cert
+spec:
+  dnsNames:
+    - argocdbry.ddns.net
+  secretName: cert-secret
+  issuerRef:
+    name: cluster-issuer
+    kind: ClusterIssuer
