@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: elasticsearch
+spec:
+  destination:
+    namespace: kube-logging
+    server: 'https://kubernetes.default.svc'
+  source:
+    path: elasticsearch
+    repoURL: 'https://github.com/Brylov/efk.git'
+    targetRevision: HEAD
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
