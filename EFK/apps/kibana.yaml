@@ -1,13 +1,13 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: fluentd
+  name: kibana
 spec:
   destination:
     namespace: kube-logging
     server: 'https://kubernetes.default.svc'
   source:
-    path: fluentbit
+    path: EFK/kibana
     repoURL: 'https://github.com/Brylov/portfolio-infra-argo.git'
     targetRevision: HEAD
   project: default
